@@ -1,10 +1,6 @@
 # myForkOfSuckess
 
- _   _      _ _
-| | | | ___| | | ___
-| |_| |/ _ \ | |/ _ \
-|  _  |  __/ | | (_) |
-|_| |_|\___|_|_|\___/
+Hello
 
 here are all my forks if my suckless utils 
 install font awsome 5 , it is a very importaint dependency here
