@@ -54,7 +54,7 @@ fi
 wal -R & 
 picom & 
 mpd &
-bash /home/light/.scripts/info.sh &
+bash /home/light/.scripts/info.sh &  #### this is for the status bar
 
 
 
