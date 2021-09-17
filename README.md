@@ -2,7 +2,7 @@
 
 Hello
 
-here are all my forks if my suckless utils .
+here are all my forks of suckless utils .
 install font awsome 5 , it is a very importaint dependency here .
 and get python pywal as well , most linux distributions must have this in their official repos , it manages all fo my colors because i am lazy and unfortunately a very bad artist.
 
