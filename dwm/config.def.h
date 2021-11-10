@@ -1,8 +1,8 @@
 /* See LICENSE file for copyright and license details. */
 
 /* appearance */
-static const unsigned int borderpx  = 2;        /* border pixel of windows */
-static const unsigned int snap      = 32;       /* snap pixel */
+static const unsigned int borderpx  = 1;        /* border pixel of windows */
+static const unsigned int snap      = 15;       /* snap pixel */
 static const unsigned int gappih    = 6;       /* horiz inner gap between windows */
 static const unsigned int gappiv    = 6;       /* vert inner gap between windows */
 static const unsigned int gappoh    = 6;       /* horiz outer gap between windows and screen edge */
@@ -12,6 +12,7 @@ static const int showbar            = 1;        /* 0 means no bar */
 static const int topbar             = 1;        /* 0 means bottom bar */
 static const char *fonts[]          = { "Roboto Mono for Powerline:pixelsize=14:antialias=true:autohint=true" , "FontAwesome:size=14" };
 static const char dmenufont[]       = "monospace:size=10";
+
 
 static const char col_gray1[]       = "#222222";
 static const char col_gray2[]       = "#444444";
@@ -38,20 +39,21 @@ static const char col_urgborder[]   = "#ff0000";
 
 
 /* tagging */
-static const char *tags[] = { "", "", "", "", "", "", "", "", "" };
+static const char *tags[] = { "", "", "", "", "", "", "", "", "" };
+//////static const char *tags[] = { "", "", "", "", "", "", "", "", "" };
 
 static const Rule rules[] = {
 	/* xprop(1):
 	 *	WM_CLASS(STRING) = instance, class
 	 *	WM_NAME(STRING) = title
 	 */
-	/* class      instance    title       tags mask     isfloating   monitor */
-	{ "Gimp",     NULL,       NULL,       1 << 6,       1,           -1 },
-	{ "firefox",  NULL,       NULL,       1 << 1,       0,           -1 },
-	{ "zoom",     NULL,       NULL,       1 << 3,       0,           -1 },
-	{ "code-oss", NULL,       NULL,       1 << 8,       0,           -1 },
-	{ "SimpleScreenRecorder", NULL,       NULL,       1 << 5,          0,           -1 },
-	{ "libreoffice",          NULL,       NULL,       1 << 4,          0,           -1 },
+	/* class                 instance    title       tags mask     isfloating   monitor */
+	{ "Gimp",                 NULL,       NULL,       1 << 6,       1,           -1 },
+	{ "firefox",              NULL,       NULL,       1 << 1,       0,           -1 },
+	{ "zoom",                 NULL,       NULL,       1 << 3,       0,           -1 },
+////	{ "code-oss",             NULL,       NULL,       1 << 8,       0,           -1 },
+	{ "SimpleScreenRecorder", NULL,       NULL,       1 << 7,       1,           -1 },
+////	{ "libreoffice",          NULL,       NULL,       1 << 4,       0,           -1 },
 };
 
 /* layout(s) */
@@ -61,6 +63,7 @@ static const int resizehints = 1;    /* 1 means respect size hints in tiled resi
 
 #define FORCE_VSPLIT 1  /* nrowgrid layout: force two clients to always split vertically */
 #include "vanitygaps.c"
+#include "shiftview.c"
 
 static const Layout layouts[] = {
 	/* symbol     arrange function */
@@ -94,17 +97,28 @@ static Key keys[] = {
 	{ MODKEY,                       XK_d,      spawn,          SHCMD("dmenu_run") },
 	{ MODKEY|ShiftMask,             XK_Return, spawn,          {.v = termcmd } },
 	{ MODKEY,                       XK_b,      togglebar,      {0} },
-	{ MODKEY,                       XK_Right,  focusstack,     {.i = +1 } },
-	{ MODKEY,                       XK_Left,   focusstack,     {.i = -1 } },
+//	{ MODKEY,                       XK_Right,  focusstack,     {.i = +1 } },
+	{ MODKEY,                       XK_l,      focusstack,     {.i = +1 } },	//
+//	{ MODKEY,                       XK_Left,   focusstack,     {.i = -1 } },
+	{ MODKEY,                       XK_h,      focusstack,     {.i = -1 } },	//
 	{ MODKEY,                       XK_i,      incnmaster,     {.i = +1 } },
 	{ MODKEY,                       XK_p,      incnmaster,     {.i = -1 } },
-	{ MODKEY,                       XK_Down,   setmfact,       {.f = -0.05} },
-	{ MODKEY,                       XK_Up,     setmfact,       {.f = +0.05} },
-	{ MODKEY|ShiftMask,             XK_Down,   setcfact,       {.f = +0.25} },
-	{ MODKEY|ShiftMask,             XK_Up,     setcfact,       {.f = -0.25} },
+//	{ MODKEY,                       XK_Down,   setmfact,       {.f = -0.05} },
+//	{ MODKEY,                       XK_Up,     setmfact,       {.f = +0.05} },
+//	{ MODKEY|ShiftMask,             XK_Down,   setcfact,       {.f = +0.25} },
+//	{ MODKEY|ShiftMask,             XK_Up,     setcfact,       {.f = -0.25} },
+	{ MODKEY,                       XK_j,     setmfact,       {.f = -0.05} },	//
+	{ MODKEY,                       XK_k,     setmfact,       {.f = +0.05} },	//
+	{ MODKEY|ShiftMask,             XK_j,     setcfact,       {.f = +0.25} },	//
+	{ MODKEY|ShiftMask,             XK_k,     setcfact,       {.f = -0.25} },	//
+
+
+
 	{ MODKEY|ShiftMask,             XK_o,      setcfact,       {.f =  0.00} },
-	{ MODKEY|ShiftMask,             XK_Right,  movestack,      {.i = +1 } },
-	{ MODKEY|ShiftMask,             XK_Left,   movestack,      {.i = -1 } },
+	{ MODKEY|ShiftMask,             XK_l, 	   movestack,      {.i = +1 } },	//
+//	{ MODKEY|ShiftMask,             XK_Right,  movestack,      {.i = +1 } },
+	{ MODKEY|ShiftMask,             XK_h,  	   movestack,      {.i = -1 } },	//
+//	{ MODKEY|ShiftMask,             XK_Left,   movestack,      {.i = -1 } },
 	{ MODKEY,                       XK_Return, zoom,           {0} },
 	{ MODKEY|Mod1Mask,              XK_equal,  incrgaps,       {.i = +1 } },
 	{ MODKEY|Mod1Mask,              XK_minus,  incrgaps,       {.i = -1 } },
@@ -129,32 +143,62 @@ static Key keys[] = {
 	{ MODKEY|ShiftMask,             XK_comma,  tagmon,         {.i = -1 } },
 	{ MODKEY|ShiftMask,             XK_period, tagmon,         {.i = +1 } },
 	///////////////////////////////////////////////////////////////////////////////////////////
+	//// shiftview implementation
+	
+	{ MODKEY,                       XK_semicolon,		 	shiftview,       {.i = -1 } },
+	{ MODKEY,                       XK_apostrophe,		 	shiftview,       {.i = +1 } },
+
+	///////////////////////////////////////////////////////////////////////////////////////////
 	//// spamming shell commands 
 	// redshif
 	
-	{ MODKEY,                       XK_x,      spawn,	   SHCMD("redshift -x") },
-	{ MODKEY,                       XK_c,      spawn,          SHCMD("redshift -P -O 2500") },
+	{ MODKEY,                      XK_x,      spawn,	   SHCMD("redshift -x") },
+	{ MODKEY,                      XK_c,      spawn,          SHCMD("redshift -P -O 2500") },
 	// mpv
 	
-	{ MODKEY|ShiftMask,             XK_m,      spawn,          SHCMD("xclip -selection c -o | xargs -I{} mpv {}") },
+	{ MODKEY|ShiftMask,            XK_m,      spawn,          SHCMD("mpv $(xclip -selection c -o)") },
 	
+
+	// ncmpcpp
+	
+	{ MODKEY,                      XK_n,      spawn,          SHCMD("st -e ncmpcpp") },
+	
+	//
+	
+	{ MODKEY,                      XK_a,      spawn,          SHCMD("bash /home/light/.scripts/ani-dmenu") },
+
 	// Audio control
 	//
 	
-	{ MODKEY|ShiftMask,             XK_minus,  spawn,          SHCMD("pamixer -d 5") },
-	{ MODKEY|ShiftMask,             XK_equal,  spawn,          SHCMD("pamixer -i 5") },
+	{ MODKEY|ShiftMask,            XK_minus,  spawn,          SHCMD("pamixer --allow-boost -d 5") },
+	{ MODKEY|ShiftMask,            XK_equal,  spawn,          SHCMD("pamixer --allow-boost -i 5") },
 
 	// ranger
 	
-	{ MODKEY|ShiftMask,             XK_d,       spawn,         SHCMD("st -e ranger") },
+	{ MODKEY|ShiftMask,            XK_d,       spawn,         SHCMD("st -e ranger") },
+
+	// screenlock
+
+	{ MODKEY|Mod1Mask,             XK_v,       spawn,         SHCMD("slock") },
 
 	// theme changer
 
-	{ MODKEY|Mod1Mask,              XK_g,       spawn,         SHCMD("st -e bash ~/.scripts/themechanger.sh") },
+	{ MODKEY|Mod1Mask,             XK_g,       spawn,         SHCMD("st -e bash ~/.scripts/themechanger.sh") },
 	
 	// xkill , for when i need it
 	
 	{ MODKEY|Mod1Mask|ShiftMask,   XK_k,        spawn,         SHCMD("xkill") },
+	// quality of life scripts
+	
+	{ MODKEY|ShiftMask,            XK_a,        spawn,         SHCMD("bash /home/light/.qolscripts/lsqol.sh") },
+	
+	// for searching 
+	
+	{ MODKEY|ShiftMask,            XK_s,        spawn,         SHCMD("bash /home/light/.qolscripts/locater.sh") },
+
+	// Screenshot
+
+	{ MODKEY,                      XK_w,      spawn,          SHCMD("import /home/light/Desktop/screenshots/$(date | awk '{print $1$4$7$2$3 }').png") },
 
 	////////////////////////////////////////////////////////////////////////////////////////////
 	TAGKEYS(                        XK_1,                      0)
