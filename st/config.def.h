@@ -5,9 +5,16 @@
  *
  * font: see http://freedesktop.org/software/fontconfig/fontconfig-user.html
  */
-static char *font = "Liberation Mono:pixelsize=15:antialias=true:autohint=true";
-static char *font2 = "Roboto Mono for Powerline:pixelsize=15:antialias=true:autohint=true";
-static int borderpx = 2;
+///static char *font = "Roboto Mono for Powerline:pixelsize=15:antialias=true:autohint=true";
+static char *font2 = "Liberation Mono:pixelsize=15:antialias=true:autohint=true";
+
+
+static char *font = "Hack:style=Regular:pixelsize=15:antialias=true:autohint=true";
+//static char *font2 = "Hack:style=Regular:pixelsize=17:antialias=true:autohint=true";
+
+
+
+static int borderpx = 5;
 
 /*
  * What program is execed by st depends of these precedence rules:
@@ -95,7 +102,8 @@ char *termname = "st-256color";
 unsigned int tabspaces = 8;
 
 /* bg opacity */
-float alpha = 0.97;
+//float alpha = 1.00;
+float alpha = 0.95;
 
 /* Terminal colors (16 first used in escape sequence) */
 //static const char *colorname[] = {

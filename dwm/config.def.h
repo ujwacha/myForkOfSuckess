@@ -3,14 +3,16 @@
 /* appearance */
 static const unsigned int borderpx  = 1;        /* border pixel of windows */
 static const unsigned int snap      = 15;       /* snap pixel */
-static const unsigned int gappih    = 6;       /* horiz inner gap between windows */
-static const unsigned int gappiv    = 6;       /* vert inner gap between windows */
-static const unsigned int gappoh    = 6;       /* horiz outer gap between windows and screen edge */
-static const unsigned int gappov    = 6;       /* vert outer gap between windows and screen edge */
+static const int swallowfloating    = 0;/* 1 means swallow floating windows by default */
+static const unsigned int gap       = 6;
+static const unsigned int gappih    = gap;       /* horiz inner gap between windows */
+static const unsigned int gappiv    = gap;       /* vert inner gap between windows */
+static const unsigned int gappoh    = gap;       /* horiz outer gap between windows and screen edge */
+static const unsigned int gappov    = gap;       /* vert outer gap between windows and screen edge */
 static       int smartgaps          = 0;        /* 1 means no outer gap when there is only one window */
 static const int showbar            = 1;        /* 0 means no bar */
 static const int topbar             = 1;        /* 0 means bottom bar */
-static const char *fonts[]          = { "Roboto Mono for Powerline:pixelsize=14:antialias=true:autohint=true" , "FontAwesome:size=14" };
+static const char *fonts[]          = { "Hack:pixelsize=14:antialias=true:autohint=true" , "FontAwesome:size=12" };
 static const char dmenufont[]       = "monospace:size=10";
 
 
@@ -39,7 +41,9 @@ static const char col_urgborder[]   = "#ff0000";
 
 
 /* tagging */
-static const char *tags[] = { "", "", "", "", "", "", "", "", "" };
+///// this is just an exprement lol /// static const char *tags[] = { "1 ", "2 ", "[3]", "[4]", "[5]", "[6]", "[7]", "[8]", "[9]" };
+static const char *tags[] = { "", "", "", "", "", "", "", "", "" };
+//////static const char *tags[] = { "", "", "", "", "", "", "", "", "" };
 //////static const char *tags[] = { "", "", "", "", "", "", "", "", "" };
 
 static const Rule rules[] = {
@@ -47,13 +51,36 @@ static const Rule rules[] = {
 	 *	WM_CLASS(STRING) = instance, class
 	 *	WM_NAME(STRING) = title
 	 */
-	/* class                 instance    title       tags mask     isfloating   monitor */
-	{ "Gimp",                 NULL,       NULL,       1 << 6,       1,           -1 },
-	{ "firefox",              NULL,       NULL,       1 << 1,       0,           -1 },
-	{ "zoom",                 NULL,       NULL,       1 << 3,       0,           -1 },
-////	{ "code-oss",             NULL,       NULL,       1 << 8,       0,           -1 },
-	{ "SimpleScreenRecorder", NULL,       NULL,       1 << 7,       1,           -1 },
-////	{ "libreoffice",          NULL,       NULL,       1 << 4,       0,           -1 },
+
+
+
+	/* /\* class     instance  title           tags mask  isfloating  isterminal  noswallow  monitor *\/ */
+	/* { "Gimp",    NULL,     NULL,           0,         1,          0,           0,        -1 }, */
+	/* { "firefox", NULL,     NULL,           1 << 2,    0,          0,          -1,        -1 }, */
+	/* { "st-256color",      NULL,     NULL,           0,         0,          1,           0,        -1 }, */
+	/* { NULL,      NULL,     "Event Tester", 0,         0,          0,           1,        -1 }, /\* xev *\/ */
+
+
+
+
+  /* class    			 instance  title           tags mask  isfloating  isterminal  noswallow  monitor */
+	{ "Gimp",    		  	 NULL,     NULL,           1 << 6,         1,          0,           0,        -1 },
+	{ "Signal",    		  	 NULL,     NULL,           1 << 3,         0,          0,           0,        -1 },
+	{ "Jami",    		  	 NULL,     NULL,           1 << 3,         0,          0,           0,        -1 },
+////	{ "Emacs",    		  	 NULL,     NULL,           1 << 8,         0,          0,           0,        -1 },
+	{ "firefox", 			 NULL,     NULL,           1 << 1,    	   0,          0,          -1,        -1 },
+	{ "Tootle", 			 NULL,     NULL,           1 << 5,    	   0,          0,          -1,        -1 },
+	{ "SimpleScreenRecorder",	 NULL,     NULL,   	   1 << 7,         1,          0,           0 ,       -1 },
+	{ "st-256color",      		 NULL,     NULL,           0,      	   0,          1,           0,        -1 },
+	{ NULL,      			 NULL,     "Event Tester", 0,      	   0,          0,           1,        -1 }, /* xev */
+ 
+
+///	{ "Brave-browser",       	 NULL,       NULL,         1 << 2,     	   0,		0,	    0,           -1 },
+//	{ "zoom",                	 NULL,       NULL,         1 << 3,         0,           -1 },
+////	{ "code-oss",          	   	 NULL,       NULL,         1 << 8,         0,           -1 },
+////	{ "libreoffice",          	 NULL,       NULL,         1 << 4,         0,           -1 },
+
+	
 };
 
 /* layout(s) */
@@ -90,12 +117,17 @@ static const Layout layouts[] = {
 static char dmenumon[2] = "0"; /* component of dmenucmd, manipulated in spawn() */
 static const char *dmenucmd[] = { "dmenu_run", "-m", dmenumon, "-fn", dmenufont, "-nb", col_gray1, "-nf", col_gray3, "-sb", col_cyan, "-sf", col_gray4, NULL };
 static const char *termcmd[]  = { "st", NULL };
+static const char scratchpadname[] = "scratchpad";
+static const char *scratchpadcmd[] = { "st", "-t", scratchpadname, "-g", "120x32", NULL };
+ 
 
 #include "movestack.c"
 static Key keys[] = {
 	/* modifier                     key        function        argument */
 	{ MODKEY,                       XK_d,      spawn,          SHCMD("dmenu_run") },
 	{ MODKEY|ShiftMask,             XK_Return, spawn,          {.v = termcmd } },
+	{ MODKEY|Mod1Mask,              XK_Return,  togglescratch,  {.v = scratchpadcmd } },
+//	{ MODKEY,                       XK_grave,  togglescratch,  {.v = scratchpadcmd } },
 	{ MODKEY,                       XK_b,      togglebar,      {0} },
 //	{ MODKEY,                       XK_Right,  focusstack,     {.i = +1 } },
 	{ MODKEY,                       XK_l,      focusstack,     {.i = +1 } },	//
@@ -154,9 +186,14 @@ static Key keys[] = {
 	
 	{ MODKEY,                      XK_x,      spawn,	   SHCMD("redshift -x") },
 	{ MODKEY,                      XK_c,      spawn,          SHCMD("redshift -P -O 2500") },
+	
+	// for xmouseless to never use a mouse again
+
+	{ MODKEY,                      XK_g,      spawn,          SHCMD("bash $HOME/.scripts/nomouse.sh") },
+	
 	// mpv
 	
-	{ MODKEY|ShiftMask,            XK_m,      spawn,          SHCMD("mpv $(xclip -selection c -o)") },
+	///{ MODKEY|ShiftMask,            XK_m,      spawn,          SHCMD("mpv $(xclip -selection c -o)") },
 	
 
 	// ncmpcpp
@@ -165,17 +202,17 @@ static Key keys[] = {
 	
 	//
 	
-	{ MODKEY,                      XK_a,      spawn,          SHCMD("bash /home/light/.scripts/ani-dmenu") },
+	{ MODKEY|Mod1Mask|ShiftMask,    XK_Return ,  spawn ,      SHCMD("$HOME/.qolscripts/emacs.sh") },
 
 	// Audio control
 	//
 	
-	{ MODKEY|ShiftMask,            XK_minus,  spawn,          SHCMD("pamixer --allow-boost -d 5") },
-	{ MODKEY|ShiftMask,            XK_equal,  spawn,          SHCMD("pamixer --allow-boost -i 5") },
+	{ MODKEY|ShiftMask,            XK_minus,  spawn,          SHCMD("$HOME/.scripts/volctrl d") },
+	{ MODKEY|ShiftMask,            XK_equal,  spawn,          SHCMD("$HOME/.scripts/volctrl i") },
 
 	// ranger
 	
-	{ MODKEY|ShiftMask,            XK_d,       spawn,         SHCMD("st -e ranger") },
+	{ MODKEY|ShiftMask,            XK_d,       spawn,         SHCMD("st -e joshuto") },
 
 	// screenlock
 
@@ -183,14 +220,19 @@ static Key keys[] = {
 
 	// theme changer
 
-	{ MODKEY|Mod1Mask,             XK_g,       spawn,         SHCMD("st -e bash ~/.scripts/themechanger.sh") },
+	//	{ MODKEY|Mod1Mask,             XK_g,       spawn,         SHCMD("st -e bash ~/.scripts/themechanger.sh") },
+	{ MODKEY|Mod1Mask,             XK_g,       spawn,         SHCMD("sxiv -b -t $HOME/Pictures") },
 	
+	// brightness
+	{ MODKEY,	              XK_minus,	  spawn,          SHCMD("sh $HOME/.scripts/brightness dec") },
+	{ MODKEY,      		      XK_equal,	  spawn,          SHCMD("sh $HOME/.scripts/brightness inc") },
+
 	// xkill , for when i need it
 	
 	{ MODKEY|Mod1Mask|ShiftMask,   XK_k,        spawn,         SHCMD("xkill") },
 	// quality of life scripts
 	
-	{ MODKEY|ShiftMask,            XK_a,        spawn,         SHCMD("bash /home/light/.qolscripts/lsqol.sh") },
+	{  MODKEY,	               XK_a,        spawn,         SHCMD("bash /home/light/.qolscripts/lsqol.sh") },
 	
 	// for searching 
 	
