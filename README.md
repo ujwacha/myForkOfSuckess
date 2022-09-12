@@ -13,6 +13,4 @@ my init.el ( config file of emacs ) is also put there.
 
 thank you for taking a look at my silly fork , i am planning to distrohop so this repo is just for storing my configuration  , have fun ricing your system 
 
-
-
-BTW i use arch
+I don't run arch anymore cause it's too much hassle for me
