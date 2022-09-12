@@ -1,0 +1,39 @@
+#!/bin/sh
+
+#### set path to .local/bin
+export PATH=$HOME/.local/bin:$PATH
+export PATH=$HOME/.cargo/bin:$PATH
+#### make sure that caps lock acts ac ctrl
+###setxkbmap -option caps:ctrl_modifier ### to set ctrl to be caps lock to make emacs work proprly
+setxkbmap -option ctrl:nocaps ### to set ctrl to be caps lock to make emacs work proprly
+#### restore the wallpaper
+wal -R & 
+#### run the compositor
+picom & 
+#### run the music player daemon
+mpd &
+#### run dwmblocks
+dwmblocks &
+#### run the search setter script
+bash .search-setter.sh &
+#### run emacs daemon
+/usr/bin/emacs --daemon &
+
+##bash $HOME/.qolscripts/stsound.sh &
+
+####bash /home/light/.scripts/info.sh &
+
+echo "no" > $HOME/.cache/wmExit
+
+
+while true
+do	
+	
+	wmExit=$(cat $HOME/.cache/wmExit)
+	if [ $wmExit = "yes" ]
+	then
+		exit 
+	else
+		dwm ;
+	fi
+done
