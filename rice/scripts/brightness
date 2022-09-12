@@ -1,0 +1,4 @@
+#! /bin/bash
+
+xbacklight -$1 2 ;
+notification "brightness : $(xbacklight)" 2

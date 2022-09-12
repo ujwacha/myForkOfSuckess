@@ -1,0 +1,9 @@
+#!/bin/bash
+
+#display notification
+bash $HOME/.scripts/notifier.sh "$1"
+
+sleep $2
+
+#stop displaying notification
+bash $HOME/.scripts/notifier.sh

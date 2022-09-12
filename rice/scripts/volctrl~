@@ -1,0 +1,4 @@
+#! /bin/bash
+
+pamixer --allow-boost -$1 5 ;
+pkill -RTMIN+10 dwmblocks ;

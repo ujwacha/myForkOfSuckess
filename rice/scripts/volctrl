@@ -1,0 +1,26 @@
+#! /bin/bash
+
+## uncomment and comment to select your audio backend
+
+backend="pipewire"
+###backend="pulseaudio"
+### pulseaudio not set
+input=$1
+
+if [ $backend = "pipewire" ]
+then
+    
+    if [ $input = "i" ]
+    then
+	pactl set-sink-volume @DEFAULT_SINK@ +5%
+    elif [ $input = "d" ]
+    then
+	pactl set-sink-volume @DEFAULT_SINK@ -5%
+    fi
+elif [$backend = "pulseaudio"]
+then
+    pamixer --allow-boost -$1 5 ;
+fi
+
+### sending signal to dwmblocks to update the volume
+pkill -RTMIN+10 dwmblocks ;
